@@ -12,11 +12,10 @@
 #define FALSE 0
 #define TRUE  1
 
-int table[X_SIZE][Y_SIZE];
-
+int get_best_move(int* table, int color);
 int get_opposite_color(int color);
-void init_table();
-int is_end_game();
-int is_legal_move(int x);
-void move(int x, int color);
-void print_table();
+void init_table(int* table);
+int is_end_game(int* table);
+int is_legal_move(int* table, int x);
+void move(int* table, int x, int color);
+void print_table(int* table);
