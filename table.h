@@ -12,7 +12,6 @@
 #define FALSE 0
 #define TRUE  1
 
-int get_best_move(int* table, int color);
 int get_opposite_color(int color);
 void init_table(int* table);
 int is_end_game(int* table);

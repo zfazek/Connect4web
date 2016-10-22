@@ -1,5 +1,4 @@
-#include <stdio.h>
-
+#include "computer.h"
 #include "table.h"
 #include "test.h"
 

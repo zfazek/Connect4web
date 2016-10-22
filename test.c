@@ -1,7 +1,7 @@
-#include <assert.h>
-#include <stdio.h>
-
 #include "test.h"
+
+#include <assert.h>
+
 #include "table.h"
 
 static void test_is_legal_move() {
