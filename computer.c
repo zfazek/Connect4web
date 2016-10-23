@@ -66,7 +66,7 @@ static void init(const int* t, int* number_of_wins, int* table, int* orig_table)
     copy_table(t, orig_table);
 }
 
-static int get_number_of_wins_per_first_move(int* table, int* orig_table, const int m, const int color,
+static int get_number_of_wins_per_first_move(int* table, const int* orig_table, const int m, const int color,
         const int number_of_games) {
     int wins = 0;
     for (int n = 0; n < number_of_games; n++) {
