@@ -1,3 +1,5 @@
 #pragma once
 
-int get_best_move(int* table, int color);
+#define NO_BEST_MOVE -1
+
+int get_best_move(const int* table, const int color, const int number_of_games);

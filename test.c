@@ -1,6 +1,7 @@
 #include "test.h"
 
 #include <assert.h>
+#include <stdio.h>
 
 #include "table.h"
 
@@ -158,11 +159,60 @@ static void test_is_end_game() {
     test_is_end_game_diagonal();
 }
 
+static void test_get_legal_moves() {
+    int table[X_SIZE * Y_SIZE];
+    int legal_moves[X_SIZE];
+    init_table(table);
+    int number_of_legal_moves = get_legal_moves(table, legal_moves);
+    assert(number_of_legal_moves == X_SIZE);
+    for (int i = 0; i < X_SIZE; i++) {
+        assert(i == legal_moves[i]);
+    }
+
+    for (int y = 0; y < Y_SIZE; y++) {
+        move(table, X_SIZE - 1, WHITE);
+    }
+    number_of_legal_moves = get_legal_moves(table, legal_moves);
+    assert (number_of_legal_moves == X_SIZE - 1);
+    for (int i = 0; i < number_of_legal_moves; i++) {
+        assert(i == legal_moves[i]);
+    }
+}
+
+static void test_take_back() {
+    int table[X_SIZE * Y_SIZE];
+    int legal_moves[X_SIZE];
+    init_table(table);
+    for (int y = 0; y < Y_SIZE; y++) {
+        move(table, X_SIZE - 1, WHITE);
+    }
+    int number_of_legal_moves = get_legal_moves(table, legal_moves);
+    assert (number_of_legal_moves == X_SIZE - 1);
+    take_back(table, X_SIZE - 1);
+    number_of_legal_moves = get_legal_moves(table, legal_moves);
+    assert (number_of_legal_moves == X_SIZE);
+}
+
+static void test_copy_table() {
+    int table[X_SIZE * Y_SIZE];
+    int new_table[X_SIZE * Y_SIZE];
+    for (int i = 0; i < X_SIZE * Y_SIZE; i++) {
+        table[i] = i;
+    }
+    copy_table(table, new_table);
+    for (int i = 0; i < X_SIZE * Y_SIZE; i++) {
+        assert(table[i] == new_table[i]);
+    }
+}
+
 void test() {
     test_is_legal_move();
     test_init_table();
     test_get_opposite_color();
     test_move();
     test_is_end_game();
+    test_get_legal_moves();
+    test_take_back();
+    test_copy_table();
     puts("All tests are passed!");
 }
