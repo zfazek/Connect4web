@@ -180,6 +180,10 @@ void print_table(const int* table) {
                 case BLACK:
                     c = 'O';
                     break;
+
+                default:
+                    c = ' ';
+                    break;
             }
             printf("%c ", c);
         }

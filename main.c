@@ -24,12 +24,11 @@ static void print_winner(const int winner) {
     }
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, __attribute__((unused))char** argv) {
     int color;
     int m;
     int table[X_SIZE * Y_SIZE];
     int moves_idx = 0;
-    int moves_history[X_SIZE * Y_SIZE];
 
     if (argc == 2) {
         test();
@@ -44,7 +43,6 @@ int main(int argc, char* argv[]) {
         }
         m = get_best_move(table, color, number_of_games);
         move(table, m, color);
-        moves_history[moves_idx++] = m;
         print_table_with_last_move(table, m);
         color = get_opposite_color(color);
     }

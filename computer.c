@@ -3,7 +3,7 @@
 
 #include <bsd/stdlib.h>
 
-static int get_best_move_monkey(const int* table, const int color) {
+static int get_best_move_monkey(const int* table) {
     int m;
     while (1) {
         m = arc4random_uniform(X_SIZE);
@@ -37,14 +37,14 @@ static int play_one_game(int* table, int color) {
         if (winner != NO_END_GAME) {
             return winner;
         }
-        int m = get_best_move_monkey(table, color);
+        int m = get_best_move_monkey(table);
         move(table, m, color);
         color = get_opposite_color(color);
     }
 }
 
 static int get_move_with_most_wins(const int* number_of_wins) {
-    int move_with_most_wins;
+    int move_with_most_wins = 0;
     int max = -1;
     for (int i = 0; i < X_SIZE; i++) {
         if (number_of_wins[i] > max) {
@@ -100,7 +100,7 @@ static int get_best_move_monte_carlo(const int* t, const int color, const int nu
     puts("");
     const int best_move = get_move_with_most_wins(number_of_wins);
     if (best_move == NO_BEST_MOVE) {
-        return get_best_move_monkey(table, color);
+        return get_best_move_monkey(table);
     }
     return best_move;
 }
