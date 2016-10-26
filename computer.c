@@ -29,13 +29,13 @@ static int is_win_in_one_move(const int* t, const int color) {
 }
 
 static int play_one_game(int* table, int color) {
-    if (is_win_in_one_move(table, color) == color) {
-        return color;
-    }
     while (1) {
         const int winner = is_end_game(table);
         if (winner != NO_END_GAME) {
             return winner;
+        }
+        if (is_win_in_one_move(table, color) == color) {
+            return color;
         }
         int m = get_best_move_monkey(table);
         move(table, m, color);
