@@ -41,9 +41,8 @@ int main(int argc, __attribute__ ((unused))
 	int number_of_games = 25000;
 	color = WHITE;
 	for (int n = 0; n < X_SIZE * Y_SIZE; n++) {
-		if (is_end_game(table) != NO_END_GAME) {
+		if (is_end_game(table) != NO_END_GAME)
 			break;
-		}
 		m = get_best_move(table, color, number_of_games);
 		move(table, m, color);
 		print_table_with_last_move(table, m);

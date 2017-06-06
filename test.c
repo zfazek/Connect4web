@@ -114,16 +114,14 @@ static void test_is_end_game_diagonal_by_color(int color)
 	assert(NO_END_GAME == is_end_game(table));
 	for (int x = 0; x < 4; x++) {
 		for (int y = 0; y <= x; y++) {
-			if (x == 3 && y == 0) {
+			if (x == 3 && y == 0)
 				move(table, x, opposit_color);
-			} else {
+			else
 				move(table, x, color);
-			}
-			if (x == 3 && y == 3) {
+			if (x == 3 && y == 3)
 				assert(color == is_end_game(table));
-			} else {
+			else
 				assert(NO_END_GAME == is_end_game(table));
-			}
 		}
 	}
 
@@ -131,16 +129,14 @@ static void test_is_end_game_diagonal_by_color(int color)
 	assert(NO_END_GAME == is_end_game(table));
 	for (int x = 0; x < 4; x++) {
 		for (int y = 0; y + x <= 3; y++) {
-			if (x == 0 && y == 0) {
+			if (x == 0 && y == 0)
 				move(table, x, opposit_color);
-			} else {
+			else
 				move(table, x, color);
-			}
-			if (x == 3 && y == 0) {
+			if (x == 3 && y == 0)
 				assert(color == is_end_game(table));
-			} else {
+			else
 				assert(NO_END_GAME == is_end_game(table));
-			}
 		}
 	}
 }

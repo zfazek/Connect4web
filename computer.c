@@ -8,9 +8,8 @@ static int get_best_move_monkey(const int *table)
 	int m;
 	while (1) {
 		m = arc4random_uniform(X_SIZE);
-		if (is_legal_move(table, m)) {
+		if (is_legal_move(table, m))
 			return m;
-		}
 	}
 }
 
@@ -21,9 +20,8 @@ static int is_win_in_one_move(const int *t, const int color)
 	for (int i = 0; i < X_SIZE; i++) {
 		if (is_legal_move(table, i)) {
 			move(table, i, color);
-			if (is_end_game(table) == color) {
+			if (is_end_game(table) == color)
 				return color;
-			}
 			take_back(table, i);
 		}
 	}
@@ -34,12 +32,10 @@ static int play_one_game(int *table, int color)
 {
 	while (1) {
 		const int winner = is_end_game(table);
-		if (winner != NO_END_GAME) {
+		if (winner != NO_END_GAME)
 			return winner;
-		}
-		if (is_win_in_one_move(table, color) == color) {
+		if (is_win_in_one_move(table, color) == color)
 			return color;
-		}
 		int m = get_best_move_monkey(table);
 		move(table, m, color);
 		color = get_opposite_color(color);
@@ -56,9 +52,8 @@ static int get_move_with_most_wins(const int *number_of_wins)
 			move_with_most_wins = i;
 		}
 	}
-	if (max == 0) {
+	if (max == 0)
 		return NO_BEST_MOVE;
-	}
 	return move_with_most_wins;
 }
 
@@ -82,9 +77,8 @@ static int get_number_of_wins_per_first_move(int *table,
 		move(table, m, color);
 		const int winner =
 		    play_one_game(table, get_opposite_color(color));
-		if (winner == color) {
+		if (winner == color)
 			wins++;
-		}
 		copy_table(orig_table, table);
 	}
 	return wins;
@@ -95,15 +89,12 @@ static int get_best_move_monte_carlo(const int *t,
 {
 	int legal_moves[X_SIZE];
 	int number_of_legal_moves = get_legal_moves(t, legal_moves);
-	if (number_of_legal_moves == 1) {
+	if (number_of_legal_moves == 1)
 		return legal_moves[0];
-	}
-
 	int number_of_wins[X_SIZE];
 	int table[X_SIZE * Y_SIZE];
 	int orig_table[X_SIZE * Y_SIZE];
 	init(t, number_of_wins, table, orig_table);
-
 	for (int i = 0; i < number_of_legal_moves; i++) {
 		number_of_wins[legal_moves[i]] =
 		    get_number_of_wins_per_first_move(table,
@@ -115,9 +106,8 @@ static int get_best_move_monte_carlo(const int *t,
 	}
 	puts("");
 	const int best_move = get_move_with_most_wins(number_of_wins);
-	if (best_move == NO_BEST_MOVE) {
+	if (best_move == NO_BEST_MOVE)
 		return get_best_move_monkey(table);
-	}
 	return best_move;
 }
 

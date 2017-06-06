@@ -4,13 +4,12 @@
 
 int get_opposite_color(const int color)
 {
-	if (color == WHITE) {
+	if (color == WHITE)
 		return BLACK;
-	} else if (color == BLACK) {
+	else if (color == BLACK)
 		return WHITE;
-	} else {
+	else
 		return EMPTY;
-	}
 }
 
 void init_table(int *table)
@@ -55,14 +54,12 @@ static int is_end_game_horizontal(const int *table, const int color)
 		for (int init = 0; init <= X_SIZE - 4; init++) {
 			int found = 0;
 			for (int x = init; x < X_SIZE; x++) {
-				if (table[y * X_SIZE + x] != color) {
+				if (table[y * X_SIZE + x] != color)
 					break;
-				} else {
+				else
 					found++;
-				}
-				if (found == 4) {
+				if (found == 4)
 					return color;
-				}
 			}
 		}
 	}
@@ -75,14 +72,12 @@ static int is_end_game_vertical(const int *table, const int color)
 		for (int init = 0; init <= Y_SIZE - 4; init++) {
 			int found = 0;
 			for (int y = init; y < Y_SIZE; y++) {
-				if (table[y * X_SIZE + x] != color) {
+				if (table[y * X_SIZE + x] != color)
 					break;
-				} else {
+				else
 					found++;
-				}
-				if (found == 4) {
+				if (found == 4)
 					return color;
-				}
 			}
 		}
 	}
@@ -95,14 +90,12 @@ static int is_end_game_diagonal(const int *table, const int color)
 		for (int y = 0; y < Y_SIZE - 4; y++) {
 			int found = 0;
 			for (int i = 0; i < 4; i++) {
-				if (table[(y + i) * X_SIZE + x + i] != color) {
+				if (table[(y + i) * X_SIZE + x + i] != color)
 					break;
-				} else {
+				else
 					found++;
-				}
-				if (found == 4) {
+				if (found == 4)
 					return color;
-				}
 			}
 		}
 	}
@@ -126,15 +119,12 @@ static int is_end_game_diagonal(const int *table, const int color)
 
 static int is_end_game_by_color(const int *table, const int color)
 {
-	if (is_end_game_horizontal(table, color) != NO_END_GAME) {
+	if (is_end_game_horizontal(table, color) != NO_END_GAME)
 		return color;
-	}
-	if (is_end_game_vertical(table, color) != NO_END_GAME) {
+	if (is_end_game_vertical(table, color) != NO_END_GAME)
 		return color;
-	}
-	if (is_end_game_diagonal(table, color) != NO_END_GAME) {
+	if (is_end_game_diagonal(table, color) != NO_END_GAME)
 		return color;
-	}
 	return NO_END_GAME;
 }
 
@@ -150,28 +140,23 @@ static int is_draw(const int *table)
 
 int is_end_game(const int *table)
 {
-	if (is_draw(table)) {
+	if (is_draw(table))
 		return DRAW;
-	}
-	if (is_end_game_by_color(table, WHITE) == WHITE) {
+	if (is_end_game_by_color(table, WHITE) == WHITE)
 		return WHITE;
-	}
-	if (is_end_game_by_color(table, BLACK) == BLACK) {
+	if (is_end_game_by_color(table, BLACK) == BLACK)
 		return BLACK;
-	}
 	return NO_END_GAME;
 }
 
 int is_legal_move(const int *table, const int x)
 {
-	if (x < 0 || x >= X_SIZE) {
+	if (x < 0 || x >= X_SIZE)
 		return FALSE;
-	}
-	if (table[X_SIZE * (Y_SIZE - 1) + x] == EMPTY) {
+	if (table[X_SIZE * (Y_SIZE - 1) + x] == EMPTY)
 		return TRUE;
-	} else {
+	else
 		return FALSE;
-	}
 }
 
 void copy_table(const int *table, int *new_table)
