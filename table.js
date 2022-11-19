@@ -16,6 +16,8 @@ function take_back() {
     }
     table[++y * X_SIZE + x] = EMPTY;
     moves.pop();
+    color = get_opposite_color(color);
+    state = STATE_PLAYER_MOVES;
 }
 
 function get_legal_moves(table, legal_moves) {
@@ -38,7 +40,6 @@ function is_legal_move(table, x) {
         return false;
     }
 }
-
 
 function is_end_game_horizontal(table, color) {
     for (let y = 0; y < Y_SIZE; y++) {

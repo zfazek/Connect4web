@@ -29,14 +29,15 @@ function myMousePressed() {
         return;
     }
     let x = Math.floor(mouseX / (WIDTH / X_SIZE));
+    console.log(x);
     if (is_legal_move(table, x)) {
         move(table, x, color);
+        color = get_opposite_color(color);
         if (is_end_game(table) != NO_END_GAME) {
             game_ends();
             return;
         }
         state = STATE_COMPUTER_MOVES;
-        color = get_opposite_color(color);
         computer_moves();
     }
 }
@@ -53,11 +54,11 @@ function computer_moves() {
         game_ends();
     }
     move(table, best_move, color);
+    color = get_opposite_color(color);
     if (is_end_game(table) != NO_END_GAME) {
         game_ends();
     }
     state = STATE_PLAYER_MOVES;
-    color = get_opposite_color(color);
 }
 
 function game_ends() {
