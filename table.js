@@ -1,4 +1,4 @@
-function move(table, x) {
+function move(x) {
     let y = 0;
     while (table[y++ * X_SIZE + x] != EMPTY) {
     }
@@ -21,17 +21,17 @@ function take_back() {
     state = STATE_PLAYER_MOVES;
 }
 
-function get_legal_moves(table, legal_moves) {
+function get_legal_moves(legal_moves) {
     let number_of_legal_moves = 0;
     for (let i = 0; i < X_SIZE; i++) {
-        if (is_legal_move(table, i)) {
+        if (is_legal_move(i)) {
             legal_moves[number_of_legal_moves++] = i;
         }
     }
     return number_of_legal_moves;
 }
 
-function is_legal_move(table, x) {
+function is_legal_move(x) {
     if (x < 0 || x >= X_SIZE) {
         return false;
     }
@@ -42,20 +42,20 @@ function is_legal_move(table, x) {
     }
 }
 
-function is_end_game(table) {
-    if (is_draw(table)) {
+function is_end_game() {
+    if (is_draw()) {
         return DRAW;
     }
-    if (is_end_game_by_color(table, YELLOW) == YELLOW) {
+    if (is_end_game_by_color(YELLOW) == YELLOW) {
         return YELLOW;
     }
-    if (is_end_game_by_color(table, RED) == RED) {
+    if (is_end_game_by_color(RED) == RED) {
         return RED;
     }
     return NO_END_GAME;
 }
 
-function is_end_game_horizontal(table, color) {
+function is_end_game_horizontal(color) {
     for (let y = 0; y < Y_SIZE; y++) {
         for (let init = 0; init <= X_SIZE - 4; init++) {
             let found = 0;
@@ -74,7 +74,7 @@ function is_end_game_horizontal(table, color) {
     return NO_END_GAME;
 }
 
-function is_end_game_vertical(table, color) {
+function is_end_game_vertical(color) {
     for (let x = 0; x < X_SIZE; x++) {
         for (let init = 0; init <= Y_SIZE - 4; init++) {
             let found = 0;
@@ -93,7 +93,7 @@ function is_end_game_vertical(table, color) {
     return NO_END_GAME;
 }
 
-function is_end_game_diagonal(table, color) {
+function is_end_game_diagonal(color) {
     for (let x = 0; x <= X_SIZE - 4; x++) {
         for (let y = 0; y <= Y_SIZE - 4; y++) {
             let found = 0;
@@ -127,20 +127,20 @@ function is_end_game_diagonal(table, color) {
     return NO_END_GAME;
 }
 
-function is_end_game_by_color(table, color) {
-    if (is_end_game_horizontal(table, color) != NO_END_GAME) {
+function is_end_game_by_color(color) {
+    if (is_end_game_horizontal(color) != NO_END_GAME) {
         return color;
     }
-    if (is_end_game_vertical(table, color) != NO_END_GAME) {
+    if (is_end_game_vertical(color) != NO_END_GAME) {
         return color;
     }
-    if (is_end_game_diagonal(table, color) != NO_END_GAME) {
+    if (is_end_game_diagonal(color) != NO_END_GAME) {
         return color;
     }
     return NO_END_GAME;
 }
 
-function is_draw(table) {
+function is_draw() {
     for (let i = 0; i < X_SIZE * Y_SIZE; i++) {
         if (table[i] == EMPTY) {
             return false;

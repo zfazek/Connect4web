@@ -11,10 +11,10 @@ function setup() {
 
 function draw() {
     background(0, 0, 255);
-    draw_table(table);
+    draw_table();
 }
 
-function draw_table(table) {
+function draw_table() {
     for (let x = 0; x < X_SIZE; x++) {
         for (let y = 0; y < Y_SIZE; y++) {
             switch (table[y * X_SIZE + x]) {

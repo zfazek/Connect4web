@@ -34,13 +34,12 @@ function main() {
 
 function myMousePressed() {
     if (state != STATE_PLAYER_MOVES) {
-        console.log("No more moves");
         return;
     }
     let x = Math.floor(mouseX / (WIDTH / X_SIZE));
-    if (is_legal_move(table, x)) {
-        move(table, x);
-        if (is_end_game(table) != NO_END_GAME) {
+    if (is_legal_move(x)) {
+        move(x);
+        if (is_end_game() != NO_END_GAME) {
             game_ends();
             return;
         }
@@ -52,18 +51,16 @@ function myMousePressed() {
 function ai() {
     if (state == STATE_PLAYER_MOVES) {
         computer_moves();
-    } else {
-        console.log("No more moves");
     }
 }
 
 function computer_moves() {
-    best_move = get_best_move(table, number_of_games);
+    best_move = get_best_move(number_of_games);
     if (best_move == -1) {
         game_ends();
     }
-    move(table, best_move);
-    if (is_end_game(table) != NO_END_GAME) {
+    move(best_move);
+    if (is_end_game() != NO_END_GAME) {
         game_ends();
     } else {
         state = STATE_PLAYER_MOVES;
@@ -72,22 +69,6 @@ function computer_moves() {
 
 function game_ends() {
     state = STATE_END;
-    console.log("GAME END!");
-    print_winner(is_end_game(table));
-}
-
-function print_winner(winner) {
-    switch (winner) {
-    case DRAW:
-        console.log("DRAW!");
-        break;
-    case RED:
-        console.log("RED WON!");
-        break;
-    case YELLOW:
-        console.log("YELLOW WON!");
-        break;
-    }
 }
 
 function init_table() {

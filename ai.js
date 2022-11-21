@@ -1,25 +1,25 @@
-function get_best_move(table, number_of_games) {
+function get_best_move(number_of_games) {
     let legal_moves = [];
-    let num_legal_moves = get_legal_moves(table, legal_moves);
+    let num_legal_moves = get_legal_moves(legal_moves);
     if (num_legal_moves == 0) {
         return -1;
     }
-    let m = can_win(table, legal_moves);
+    let m = can_win(legal_moves);
     if (m != -1) {
         return m;
     }
-    m = can_save(table, legal_moves);
+    m = can_save(legal_moves);
     if (m != -1) {
         return m;
     }
-    return get_best_move_monkey(table);
+    return get_best_move_monkey();
 }
 
-function can_win(table, legal_moves) {
+function can_win(legal_moves) {
     for (let i = 0; i < legal_moves.length; i++) {
         let m = legal_moves[i];
-        move(table, m);
-        if (is_end_game(table) == get_opposite_color(color_to_move)) {
+        move(m);
+        if (is_end_game() == get_opposite_color(color_to_move)) {
             take_back();
             return m;
         }
@@ -28,12 +28,12 @@ function can_win(table, legal_moves) {
     return -1;
 }
 
-function can_save(table, legal_moves) {
+function can_save(legal_moves) {
     color_to_move = get_opposite_color();
     for (let i = 0; i < legal_moves.length; i++) {
         let m = legal_moves[i];
-        move(table, m);
-        if (is_end_game(table) == get_opposite_color(color_to_move)) {
+        move(m);
+        if (is_end_game() == get_opposite_color(color_to_move)) {
             take_back();
             color_to_move = get_opposite_color();
             return m;
@@ -44,10 +44,10 @@ function can_save(table, legal_moves) {
     return -1;
 }
 
-function get_best_move_monkey(table) {
+function get_best_move_monkey() {
     while (true) {
         let m = get_random_int(X_SIZE);
-        if (is_legal_move(table, m))
+        if (is_legal_move(m))
             return m;
     }
 }
