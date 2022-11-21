@@ -1,9 +1,10 @@
-function move(table, x, color) {
+function move(table, x) {
     let y = 0;
     while (table[y++ * X_SIZE + x] != EMPTY) {
     }
-    table[--y * X_SIZE + x] = color;
+    table[--y * X_SIZE + x] = color_to_move;
     moves.push(x);
+    color_to_move = get_opposite_color();
 }
 
 function take_back() {
@@ -16,7 +17,7 @@ function take_back() {
     }
     table[++y * X_SIZE + x] = EMPTY;
     moves.pop();
-    color = get_opposite_color(color);
+    color_to_move = get_opposite_color();
     state = STATE_PLAYER_MOVES;
 }
 
@@ -39,6 +40,19 @@ function is_legal_move(table, x) {
     } else {
         return false;
     }
+}
+
+function is_end_game(table) {
+    if (is_draw(table)) {
+        return DRAW;
+    }
+    if (is_end_game_by_color(table, YELLOW) == YELLOW) {
+        return YELLOW;
+    }
+    if (is_end_game_by_color(table, RED) == RED) {
+        return RED;
+    }
+    return NO_END_GAME;
 }
 
 function is_end_game_horizontal(table, color) {
@@ -80,8 +94,8 @@ function is_end_game_vertical(table, color) {
 }
 
 function is_end_game_diagonal(table, color) {
-    for (let x = 0; x < X_SIZE - 4; x++) {
-        for (let y = 0; y < Y_SIZE - 4; y++) {
+    for (let x = 0; x <= X_SIZE - 4; x++) {
+        for (let y = 0; y <= Y_SIZE - 4; y++) {
             let found = 0;
             for (let i = 0; i < 4; i++) {
                 if (table[(y + i) * X_SIZE + x + i] != color) {
@@ -95,7 +109,7 @@ function is_end_game_diagonal(table, color) {
             }
         }
     }
-    for (let x = 0; x < X_SIZE - 4; x++) {
+    for (let x = 0; x <= X_SIZE - 4; x++) {
         for (let y = Y_SIZE - 1; y >= 3; y--) {
             let found = 0;
             for (let i = 0; i < 4; i++) {
@@ -133,18 +147,5 @@ function is_draw(table) {
         }
     }
     return true;
-}
-
-function is_end_game(table) {
-    if (is_draw(table)) {
-        return DRAW;
-    }
-    if (is_end_game_by_color(table, WHITE) == WHITE) {
-        return WHITE;
-    }
-    if (is_end_game_by_color(table, BLACK) == BLACK) {
-        return BLACK;
-    }
-    return NO_END_GAME;
 }
 

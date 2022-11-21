@@ -1,12 +1,5 @@
-const X_SIZE = 7;
-const Y_SIZE = 6;
-
 const WIDTH = 640;
 const HEIGHT = WIDTH;
-
-const STATE_PLAYER_MOVES = 0;
-const STATE_COMPUTER_MOVES = 1;
-const STATE_END = 2;
 
 function setup() {
     let myCanvas = createCanvas(WIDTH, HEIGHT);
@@ -18,38 +11,46 @@ function setup() {
 
 function draw() {
     background(0, 0, 255);
-    print_table(table);
+    draw_table(table);
 }
 
-function print_table(table) {
-    for (let y = 0; y < Y_SIZE; y++) {
-        for (let x = 0; x < X_SIZE; x++) {
+function draw_table(table) {
+    for (let x = 0; x < X_SIZE; x++) {
+        for (let y = 0; y < Y_SIZE; y++) {
             switch (table[y * X_SIZE + x]) {
                 case EMPTY:
-                    c = '.';
                     draw_disc(x, y, EMPTY);
                     break;
-                case WHITE:
-                    c = 'X';
-                    draw_disc(x, y, WHITE);
+                case RED:
+                    draw_disc(x, y, RED);
                     break;
-                case BLACK:
-                    c = 'O';
-                    draw_disc(x, y, BLACK);
+                case YELLOW:
+                    draw_disc(x, y, YELLOW);
                     break;
             }
         }
     }
-    draw_disc(moves[moves.length - 1], Y_SIZE, END);
+    if (state == STATE_END) {
+        textSize(HEIGHT / 10);
+        if (color_to_move == YELLOW) {
+            fill(255, 0, 0);
+            text("RED WON!", 50, 50);
+        } else {
+            fill(255, 255, 0);
+            text("YELLOW WON!", 50, 50);
+        }
+    } else {
+        draw_disc(moves[moves.length - 1], Y_SIZE, color_to_move);
+    }
 }
 
 function draw_disc(x, y, color) {
     const size_factor = 0.85;
     const border_x = 0;
     const border_y = 0;
-    if (color == WHITE) {
+    if (color == RED) {
         fill(255, 0, 0);
-    } else if (color == BLACK) {
+    } else if (color == YELLOW) {
         fill(255, 255, 0);
     } else if (color == END) {
         fill(0, 0, 0);

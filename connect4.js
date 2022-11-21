@@ -1,24 +1,32 @@
-let color;
-let EMPTY = 0;
-let WHITE = 1;
-let BLACK = 2;
-let END = 3;
-let NO_END_GAME = 0;
-let NO_BEST_MOVE = -1;
-let DRAW = 3;
+const X_SIZE = 7;
+const Y_SIZE = 6;
+
+const EMPTY = 0;
+const RED = 1;
+const YELLOW = 2;
+const END = 3;
+
+const STATE_PLAYER_MOVES = 0;
+const STATE_COMPUTER_MOVES = 1;
+const STATE_END = 2;
+
+const NO_BEST_MOVE = -1;
+const NO_END_GAME = 0;
+const DRAW = 3;
+
 let number_of_games = 10;
 
 let table = [];
 let moves = [];
 
-let moves_idx = 0;
+let color_to_move;
 let best_move;
 let state;
 
 function main() {
     state = STATE_COMPUTER_MOVES;
+    color_to_move = RED;
     init_table();
-    color = WHITE;
     if (state == STATE_COMPUTER_MOVES) {
         computer_moves();
     }
@@ -26,13 +34,12 @@ function main() {
 
 function myMousePressed() {
     if (state != STATE_PLAYER_MOVES) {
+        console.log("No more moves");
         return;
     }
     let x = Math.floor(mouseX / (WIDTH / X_SIZE));
-    console.log(x);
     if (is_legal_move(table, x)) {
-        move(table, x, color);
-        color = get_opposite_color(color);
+        move(table, x);
         if (is_end_game(table) != NO_END_GAME) {
             game_ends();
             return;
@@ -45,27 +52,28 @@ function myMousePressed() {
 function ai() {
     if (state == STATE_PLAYER_MOVES) {
         computer_moves();
+    } else {
+        console.log("No more moves");
     }
 }
 
 function computer_moves() {
-    best_move = get_best_move(table, color, number_of_games);
+    best_move = get_best_move(table, number_of_games);
     if (best_move == -1) {
         game_ends();
     }
-    move(table, best_move, color);
-    color = get_opposite_color(color);
+    move(table, best_move);
     if (is_end_game(table) != NO_END_GAME) {
         game_ends();
+    } else {
+        state = STATE_PLAYER_MOVES;
     }
-    state = STATE_PLAYER_MOVES;
 }
 
 function game_ends() {
     state = STATE_END;
     console.log("GAME END!");
     print_winner(is_end_game(table));
-    console.log("Number of moves: ", moves_idx);
 }
 
 function print_winner(winner) {
@@ -73,10 +81,10 @@ function print_winner(winner) {
     case DRAW:
         console.log("DRAW!");
         break;
-    case WHITE:
+    case RED:
         console.log("RED WON!");
         break;
-    case BLACK:
+    case YELLOW:
         console.log("YELLOW WON!");
         break;
     }
@@ -92,13 +100,11 @@ function init_table() {
     }
 }
 
-function get_opposite_color(color) {
-    if (color == WHITE) {
-        return BLACK;
-    } else if (color == BLACK) {
-        return WHITE;
+function get_opposite_color() {
+    if (color_to_move == RED) {
+        return YELLOW;
     } else {
-        return EMPTY;
+        return RED;
     }
 }
 
