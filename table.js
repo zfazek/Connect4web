@@ -1,7 +1,6 @@
 function move(x) {
     let y = 0;
-    while (table[y++ * X_SIZE + x] != EMPTY) {
-    }
+    while (table[y++ * X_SIZE + x] != EMPTY) {}
     table[--y * X_SIZE + x] = color_to_move;
     moves.push(x);
     color_to_move = get_opposite_color();
@@ -13,8 +12,7 @@ function take_back() {
     }
     let x = moves[moves.length - 1];
     let y = Y_SIZE - 1;
-    while (table[y-- * X_SIZE + x] == EMPTY) {
-    }
+    while (table[y-- * X_SIZE + x] == EMPTY) {}
     table[++y * X_SIZE + x] = EMPTY;
     moves.pop();
     color_to_move = get_opposite_color();
@@ -44,20 +42,20 @@ function is_legal_move(x) {
 
 function is_end_game() {
     if (is_draw()) {
-        return DRAW;
+        return STATE_DRAW;
     }
     if (is_end_game_by_color(YELLOW) == YELLOW) {
-        return YELLOW;
+        return STATE_YELLOW_WON;
     }
     if (is_end_game_by_color(RED) == RED) {
-        return RED;
+        return STATE_RED_WON;
     }
-    return NO_END_GAME;
+    return STATE_NO_GAME_OVER;
 }
 
 function is_end_game_horizontal(color) {
     for (let y = 0; y < Y_SIZE; y++) {
-        for (let init = 0; init <= X_SIZE - 4; init++) {
+        for (let init = 0; init <= X_SIZE - NUM_DISCS_TO_WIN; init++) {
             let found = 0;
             for (let x = init; x < X_SIZE; x++) {
                 if (table[y * X_SIZE + x] != color) {
@@ -65,18 +63,18 @@ function is_end_game_horizontal(color) {
                 } else {
                     found++;
                 }
-                if (found == 4) {
+                if (found == NUM_DISCS_TO_WIN) {
                     return color;
                 }
             }
         }
     }
-    return NO_END_GAME;
+    return STATE_NO_GAME_OVER;
 }
 
 function is_end_game_vertical(color) {
     for (let x = 0; x < X_SIZE; x++) {
-        for (let init = 0; init <= Y_SIZE - 4; init++) {
+        for (let init = 0; init <= Y_SIZE - NUM_DISCS_TO_WIN; init++) {
             let found = 0;
             for (let y = init; y < Y_SIZE; y++) {
                 if (table[y * X_SIZE + x] != color) {
@@ -84,60 +82,60 @@ function is_end_game_vertical(color) {
                 } else {
                     found++;
                 }
-                if (found == 4) {
+                if (found == NUM_DISCS_TO_WIN) {
                     return color;
                 }
             }
         }
     }
-    return NO_END_GAME;
+    return STATE_NO_GAME_OVER;
 }
 
 function is_end_game_diagonal(color) {
-    for (let x = 0; x <= X_SIZE - 4; x++) {
-        for (let y = 0; y <= Y_SIZE - 4; y++) {
+    for (let x = 0; x <= X_SIZE - NUM_DISCS_TO_WIN; x++) {
+        for (let y = 0; y <= Y_SIZE - NUM_DISCS_TO_WIN; y++) {
             let found = 0;
-            for (let i = 0; i < 4; i++) {
+            for (let i = 0; i < NUM_DISCS_TO_WIN; i++) {
                 if (table[(y + i) * X_SIZE + x + i] != color) {
                     break;
                 } else {
                     found++;
                 }
-                if (found == 4) {
+                if (found == NUM_DISCS_TO_WIN) {
                     return color;
                 }
             }
         }
     }
-    for (let x = 0; x <= X_SIZE - 4; x++) {
-        for (let y = Y_SIZE - 1; y >= 3; y--) {
+    for (let x = 0; x <= X_SIZE - NUM_DISCS_TO_WIN; x++) {
+        for (let y = Y_SIZE - 1; y >= NUM_DISCS_TO_WIN - 1; y--) {
             let found = 0;
-            for (let i = 0; i < 4; i++) {
+            for (let i = 0; i < NUM_DISCS_TO_WIN; i++) {
                 if (table[(y - i) * X_SIZE + x + i] != color) {
                     break;
                 } else {
                     found++;
                 }
-                if (found == 4) {
+                if (found == NUM_DISCS_TO_WIN) {
                     return color;
                 }
             }
         }
     }
-    return NO_END_GAME;
+    return STATE_NO_GAME_OVER;
 }
 
 function is_end_game_by_color(color) {
-    if (is_end_game_horizontal(color) != NO_END_GAME) {
+    if (is_end_game_horizontal(color) != STATE_NO_GAME_OVER) {
         return color;
     }
-    if (is_end_game_vertical(color) != NO_END_GAME) {
+    if (is_end_game_vertical(color) != STATE_NO_GAME_OVER) {
         return color;
     }
-    if (is_end_game_diagonal(color) != NO_END_GAME) {
+    if (is_end_game_diagonal(color) != STATE_NO_GAME_OVER) {
         return color;
     }
-    return NO_END_GAME;
+    return STATE_NO_GAME_OVER;
 }
 
 function is_draw() {

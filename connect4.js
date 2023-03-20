@@ -1,18 +1,20 @@
 const X_SIZE = 7;
 const Y_SIZE = 6;
+const NUM_DISCS_TO_WIN = 4;
 
 const EMPTY = 0;
 const RED = 1;
 const YELLOW = 2;
-const END = 3;
 
 const STATE_PLAYER_MOVES = 0;
 const STATE_COMPUTER_MOVES = 1;
 const STATE_END = 2;
+const STATE_NO_GAME_OVER = 3;
+const STATE_DRAW = 4;
+const STATE_RED_WON = RED;
+const STATE_YELLOW_WON = YELLOW;
 
 const NO_BEST_MOVE = -1;
-const NO_END_GAME = 0;
-const DRAW = 3;
 
 let number_of_games = 10;
 
@@ -24,12 +26,9 @@ let best_move;
 let state;
 
 function main() {
-    state = STATE_COMPUTER_MOVES;
     color_to_move = RED;
     init_table();
-    if (state == STATE_COMPUTER_MOVES) {
-        computer_moves();
-    }
+    computer_moves();
 }
 
 function myMousePressed() {
@@ -39,11 +38,10 @@ function myMousePressed() {
     let x = Math.floor(mouseX / (WIDTH / X_SIZE));
     if (is_legal_move(x)) {
         move(x);
-        if (is_end_game() != NO_END_GAME) {
-            game_ends();
+        if (is_end_game() != STATE_NO_GAME_OVER) {
+            state = STATE_END;
             return;
         }
-        state = STATE_COMPUTER_MOVES;
         computer_moves();
     }
 }
@@ -55,20 +53,14 @@ function ai() {
 }
 
 function computer_moves() {
+    state = STATE_COMPUTER_MOVES;
     best_move = get_best_move(number_of_games);
-    if (best_move == -1) {
-        game_ends();
-    }
     move(best_move);
-    if (is_end_game() != NO_END_GAME) {
-        game_ends();
-    } else {
+    if (is_end_game() == STATE_NO_GAME_OVER) {
         state = STATE_PLAYER_MOVES;
+    } else {
+        state = STATE_END;
     }
-}
-
-function game_ends() {
-    state = STATE_END;
 }
 
 function init_table() {

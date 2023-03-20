@@ -5,6 +5,7 @@ function setup() {
     let myCanvas = createCanvas(WIDTH, HEIGHT);
     myCanvas.parent('myCanvas');
     myCanvas.mousePressed(myMousePressed);
+    textSize(HEIGHT / 10);
 
     main();
 }
@@ -17,28 +18,20 @@ function draw() {
 function draw_table() {
     for (let x = 0; x < X_SIZE; x++) {
         for (let y = 0; y < Y_SIZE; y++) {
-            switch (table[y * X_SIZE + x]) {
-                case EMPTY:
-                    draw_disc(x, y, EMPTY);
-                    break;
-                case RED:
-                    draw_disc(x, y, RED);
-                    break;
-                case YELLOW:
-                    draw_disc(x, y, YELLOW);
-                    break;
-            }
+            let color = table[y * X_SIZE + x];
+            draw_disc(x, y, color);
         }
     }
-    if (state == STATE_END) {
-        textSize(HEIGHT / 10);
-        if (color_to_move == YELLOW) {
-            fill(255, 0, 0);
-            text("RED WON!", 50, 50);
-        } else {
-            fill(255, 255, 0);
-            text("YELLOW WON!", 50, 50);
-        }
+    end = is_end_game();
+    if (end == STATE_RED_WON) {
+        fill(255, 0, 0);
+        text("RED WON!", 50, 50);
+    } else if (end == STATE_YELLOW_WON) {
+        fill(255, 255, 0);
+        text("YELLOW WON!", 50, 50);
+    } else if (end == STATE_DRAW) {
+        fill(0, 0, 0);
+        text("DRAW!", 50, 50);
     } else {
         draw_disc(moves[moves.length - 1], Y_SIZE, color_to_move);
     }
@@ -52,8 +45,6 @@ function draw_disc(x, y, color) {
         fill(255, 0, 0);
     } else if (color == YELLOW) {
         fill(255, 255, 0);
-    } else if (color == END) {
-        fill(0, 0, 0);
     } else {
         fill(255, 255, 255);
     }

@@ -2,14 +2,14 @@ function get_best_move(number_of_games) {
     let legal_moves = [];
     let num_legal_moves = get_legal_moves(legal_moves);
     if (num_legal_moves == 0) {
-        return -1;
+        return NO_BEST_MOVE;
     }
     let m = can_win(legal_moves);
-    if (m != -1) {
+    if (m != NO_BEST_MOVE) {
         return m;
     }
     m = can_save(legal_moves);
-    if (m != -1) {
+    if (m != NO_BEST_MOVE) {
         return m;
     }
     return get_best_move_monkey();
@@ -25,7 +25,7 @@ function can_win(legal_moves) {
         }
         take_back();
     }
-    return -1;
+    return NO_BEST_MOVE;
 }
 
 function can_save(legal_moves) {
@@ -41,7 +41,7 @@ function can_save(legal_moves) {
         take_back();
     }
     color_to_move = get_opposite_color();
-    return -1;
+    return NO_BEST_MOVE;
 }
 
 function get_best_move_monkey() {
@@ -53,5 +53,5 @@ function get_best_move_monkey() {
 }
 
 function get_random_int(max) {
-  return Math.floor(Math.random() * max);
+    return Math.floor(Math.random() * max);
 }
