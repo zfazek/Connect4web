@@ -16,7 +16,7 @@ const STATE_YELLOW_WON = YELLOW;
 
 const NO_BEST_MOVE = -1;
 
-let number_of_games = 10;
+const NUMBER_OF_GAMES = 1000;
 
 let table = [];
 let moves = [];
@@ -24,6 +24,7 @@ let moves = [];
 let color_to_move;
 let best_move;
 let state;
+let level;
 
 function main() {
     color_to_move = RED;
@@ -37,7 +38,7 @@ function myMousePressed() {
     }
     let x = Math.floor(mouseX / (WIDTH / X_SIZE));
     if (is_legal_move(x)) {
-        move(x);
+        move(x, true);
         if (is_end_game() != STATE_NO_GAME_OVER) {
             state = STATE_END;
             return;
@@ -54,8 +55,8 @@ function ai() {
 
 function computer_moves() {
     state = STATE_COMPUTER_MOVES;
-    best_move = get_best_move(number_of_games);
-    move(best_move);
+    best_move = get_best_move();
+    move(best_move, true);
     if (is_end_game() == STATE_NO_GAME_OVER) {
         state = STATE_PLAYER_MOVES;
     } else {

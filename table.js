@@ -1,8 +1,10 @@
-function move(x) {
+function move(x, store_to_moves) {
     let y = 0;
     while (table[y++ * X_SIZE + x] != EMPTY) {}
     table[--y * X_SIZE + x] = color_to_move;
-    moves.push(x);
+    if (store_to_moves) {
+        moves.push(x);
+    }
     color_to_move = get_opposite_color();
 }
 
