@@ -63,9 +63,9 @@ function get_best_move_monkey() {
 // Returns the move which the game can win by one move
 //
 // Check all the legal moves
-// Make each move. Hint: use move() function
+// Make each move. Hint: use make_move() function
 // Check if game is over: Hint: use is_game_over() function
-// Hint: move() function changes color_to_move to next player`s color
+// Hint: make_move() function changes color_to_move to next player`s color
 // Hint: use get_opposite_color() function to get the other player`s color
 //
 // If it wins the game, return that move
@@ -78,7 +78,7 @@ function get_best_move_monkey() {
 function can_win(legal_moves) {
     for (let i = 0; i < legal_moves.length; i++) {
         let m = legal_moves[i];
-        move(m, true);
+        make_move(m, true);
         if (is_game_over() == get_opposite_color()) {
             take_back();
             return m;

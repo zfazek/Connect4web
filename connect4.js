@@ -38,7 +38,7 @@ function myMousePressed() {
     }
     let x = Math.floor(mouseX / (WIDTH / X_SIZE));
     if (is_legal_move(x)) {
-        move(x, true);
+        make_move(x, true);
         if (is_game_over() != STATE_NO_GAME_OVER) {
             state = STATE_END;
             return;
@@ -56,7 +56,7 @@ function ai() {
 function computer_moves() {
     state = STATE_COMPUTER_MOVES;
     best_move = get_best_move();
-    move(best_move, true);
+    make_move(best_move, true);
     if (is_game_over() == STATE_NO_GAME_OVER) {
         state = STATE_PLAYER_MOVES;
     } else {

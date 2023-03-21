@@ -17,8 +17,8 @@ function best_move_monte_carlo(legal_moves) {
     }
 
     // Backup actual state: table, color_to_move
-    let table_old = [];
     let color_old = color_to_move;
+    let table_old = [];
     for (let y = 0; y < Y_SIZE; y++) {
         for (let x = 0; x < X_SIZE; x++) {
             table_old.push(table[y * X_SIZE + x]);
@@ -34,12 +34,12 @@ function best_move_monte_carlo(legal_moves) {
     }
     console.log("Number of games:", NUMBER_OF_GAMES);
 
-    // Generate all the legal moves
+    // Generate all the legal starting moves
     for (let i = 0; i < legal_moves.length; i++) {
         let m = legal_moves[i];
         wins[m] = 0;
 
-        // Generate NUMBER_OF_GAMES from each legal move
+        // Generate NUMBER_OF_GAMES from each starting move
         for (let n = 0; n < NUMBER_OF_GAMES; n++) {
 
             // Reset the table and color_to_move
@@ -50,13 +50,13 @@ function best_move_monte_carlo(legal_moves) {
             }
             color_to_move = color_old;
 
-            // Make the move. false means not to store in move history
-            move(m, false);
+            // Make the starting move. false means not to store in move history
+            make_move(m, false);
 
             // Generate random moves until game is over
             while (is_game_over() == STATE_NO_GAME_OVER) {
                 let random_move = get_good_move();
-                move(random_move, false);
+                make_move(random_move, false);
             }
 
             // Update scores based on game result
@@ -80,7 +80,7 @@ function best_move_monte_carlo(legal_moves) {
         console.log("move:", m, ", score:", wins[m]);
     }
 
-    // Find the move with maximum score
+    // Find the best starting move with maximum score
     let max = -999999;
     let best_move = 0;
     for (let i = 0; i < X_SIZE; i++) {

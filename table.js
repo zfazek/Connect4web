@@ -1,4 +1,4 @@
-function move(x, store_to_moves) {
+function make_move(x, store_to_moves) {
     let y = 0;
     while (table[y++ * X_SIZE + x] != EMPTY) {}
     table[--y * X_SIZE + x] = color_to_move;
