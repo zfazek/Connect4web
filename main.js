@@ -1,3 +1,5 @@
+// [Connect 4 Wikipedia](https://hu.wikipedia.org/wiki/Connect_four)
+
 const WIDTH = 640;
 const HEIGHT = WIDTH;
 

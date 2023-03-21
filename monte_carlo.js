@@ -88,7 +88,7 @@ function best_move_monte_carlo(legal_moves) {
         if (win > max) {
             max = win;
             best_move = i;
-        } 
+        }
     }
 
     // Restore the table and color_to_move from backup
