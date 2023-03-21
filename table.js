@@ -42,20 +42,20 @@ function is_legal_move(x) {
     }
 }
 
-function is_end_game() {
+function is_game_over() {
     if (is_draw()) {
         return STATE_DRAW;
     }
-    if (is_end_game_by_color(YELLOW) == YELLOW) {
+    if (is_game_over_by_color(YELLOW) == YELLOW) {
         return STATE_YELLOW_WON;
     }
-    if (is_end_game_by_color(RED) == RED) {
+    if (is_game_over_by_color(RED) == RED) {
         return STATE_RED_WON;
     }
     return STATE_NO_GAME_OVER;
 }
 
-function is_end_game_horizontal(color) {
+function is_game_over_horizontal(color) {
     for (let y = 0; y < Y_SIZE; y++) {
         for (let init = 0; init <= X_SIZE - NUM_DISCS_TO_WIN; init++) {
             let found = 0;
@@ -74,7 +74,7 @@ function is_end_game_horizontal(color) {
     return STATE_NO_GAME_OVER;
 }
 
-function is_end_game_vertical(color) {
+function is_game_over_vertical(color) {
     for (let x = 0; x < X_SIZE; x++) {
         for (let init = 0; init <= Y_SIZE - NUM_DISCS_TO_WIN; init++) {
             let found = 0;
@@ -93,7 +93,7 @@ function is_end_game_vertical(color) {
     return STATE_NO_GAME_OVER;
 }
 
-function is_end_game_diagonal(color) {
+function is_game_over_diagonal(color) {
     for (let x = 0; x <= X_SIZE - NUM_DISCS_TO_WIN; x++) {
         for (let y = 0; y <= Y_SIZE - NUM_DISCS_TO_WIN; y++) {
             let found = 0;
@@ -127,14 +127,14 @@ function is_end_game_diagonal(color) {
     return STATE_NO_GAME_OVER;
 }
 
-function is_end_game_by_color(color) {
-    if (is_end_game_horizontal(color) != STATE_NO_GAME_OVER) {
+function is_game_over_by_color(color) {
+    if (is_game_over_horizontal(color) != STATE_NO_GAME_OVER) {
         return color;
     }
-    if (is_end_game_vertical(color) != STATE_NO_GAME_OVER) {
+    if (is_game_over_vertical(color) != STATE_NO_GAME_OVER) {
         return color;
     }
-    if (is_end_game_diagonal(color) != STATE_NO_GAME_OVER) {
+    if (is_game_over_diagonal(color) != STATE_NO_GAME_OVER) {
         return color;
     }
     return STATE_NO_GAME_OVER;

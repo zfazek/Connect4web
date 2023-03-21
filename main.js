@@ -22,7 +22,7 @@ function draw_table() {
             draw_disc(x, y, color);
         }
     }
-    end = is_end_game();
+    end = is_game_over();
     if (end == STATE_RED_WON) {
         fill(255, 0, 0);
         text("RED WON!", 50, 50);
