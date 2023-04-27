@@ -1,4 +1,10 @@
-function make_move(x, store_to_moves) {
+// Meglépi a lépést, eltárolja a korongot a table array-ben
+// color_to_move változó értékét átállítja az ellenfelére!
+//
+// paraméterek:
+//     x oszlop indexe. pl. 0
+//     store_to_moves boolean, eltárolja-e a lépést a lépés előzmények között
+function make_move(x, store_to_moves = true) {
     let y = 0;
     while (table[y++ * X_SIZE + x] != EMPTY) {}
     table[--y * X_SIZE + x] = color_to_move;
@@ -16,7 +22,7 @@ function take_back() {
     let y = Y_SIZE - 1;
     while (table[y-- * X_SIZE + x] == EMPTY) {}
     table[++y * X_SIZE + x] = EMPTY;
-    moves.pop();
+    moves.pop(x);
     color_to_move = get_opposite_color();
     state = STATE_PLAYER_MOVES;
 }
@@ -31,6 +37,11 @@ function get_legal_moves(legal_moves) {
     return number_of_legal_moves;
 }
 
+// Visszadja, hogy a lépés legális-e
+// Ha az oszlop tele van, ez nem egy legális lépés
+//
+// paraméterek:
+//     x lépés index. pl. 0
 function is_legal_move(x) {
     if (x < 0 || x >= X_SIZE) {
         return false;

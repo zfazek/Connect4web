@@ -1,22 +1,23 @@
-// Implements Monte Carlo Simulation
-// Use Law of large numbers theory to calculate best moves
+// Monte Carlo Szimuláció
+// Nagy számok törvényét használva állíja elő a legjobb lépést
 //
-// Plays a lot of games with random moves from each starting move
-// Returns that move which generated most wins
+// Rengeteg játszmát lejátszik véletlen lépésekkel minden lehetséges kezdőlépéssel
+// Azzal a kezdőlépéssel tér vissza amelynél a legnagyobb a
+// nyert és veszített játszmák különbsége
 //
-// params:
-//      legal_moves: array of indices of legal moves
-//      e.g. [0, 1, 2, 6]
+// paraméterek:
+//     legal_moves: tömb (array) amely tartalmazza a legális lépéseket
+//      pl. [0, 1, 2, 6]
 function best_move_monte_carlo(legal_moves) {
 
-    // If there is immedate win, no need for Monte Carlo Simulation
-    // Make that move
+    // Nincs szükség  Monte Carlo szimulációra ha van azonnali nyerő lépés
+    // Akkor azzal a lépéssel tér vissza
     let m = can_win(legal_moves);
     if (m != NO_BEST_MOVE) {
         return m;
     }
 
-    // Backup actual state: table, color_to_move
+    // Elmenti az aktuális állapotot: table, color_to_move
     let color_old = color_to_move;
     let table_old = [];
     for (let y = 0; y < Y_SIZE; y++) {
@@ -25,24 +26,25 @@ function best_move_monte_carlo(legal_moves) {
         }
     }
 
-    // Stores the scores of each possible move
-    // Initialize with very small number
-    // This way if that move is not legal, its score remains small
+    // Eltárolja a pontértékét minden lehetséges kezdőlépésnek
+    // Nagyon kis számot ad kezdőértéknek
+    // Így ha egy lépés nem lehetséges a pontértéke kisebb, mint a többi lépésé
+    // Így nem ezt fogja használni a gép
     let wins = [];
     for (let i = 0; i < X_SIZE; i++) {
         wins.push(-999999);
     }
     console.log("Number of games:", NUMBER_OF_GAMES);
 
-    // Generate all the legal starting moves
+    // Előállítja az összes legális kezdőlépést
     for (let i = 0; i < legal_moves.length; i++) {
         let m = legal_moves[i];
         wins[m] = 0;
 
-        // Generate NUMBER_OF_GAMES from each starting move
+        // Lejátszik NUMBER_OF_GAMES játsznát minden kezdőlépésből
         for (let n = 0; n < NUMBER_OF_GAMES; n++) {
 
-            // Reset the table and color_to_move
+            // Nullázza a table és color_to_move változókat
             for (let y = 0; y < Y_SIZE; y++) {
                 for (let x = 0; x < X_SIZE; x++) {
                     table[y * X_SIZE + x] = table_old[y * X_SIZE + x];
@@ -50,16 +52,17 @@ function best_move_monte_carlo(legal_moves) {
             }
             color_to_move = color_old;
 
-            // Make the starting move. false means not to store in move history
+            // Meglépi a kezdőlépést. false azt jelenti, hogy
+            // ne tárolja el a lépést a lépés előzmények között
             make_move(m, false);
 
-            // Generate random moves until game is over
+            // Addig lép véletlen lépéseket amíg nincs vége a játszmának
             while (is_game_over() == STATE_NO_GAME_OVER) {
                 let random_move = get_good_move();
                 make_move(random_move, false);
             }
 
-            // Update scores based on game result
+            // Frissíti a pontértékek a játszma eredményétől függően
             let end = is_game_over();
             if (end == STATE_RED_WON) {
                 if (color_old == RED) {
@@ -76,11 +79,11 @@ function best_move_monte_carlo(legal_moves) {
             }
         }
 
-        // Hidden debug log
+        // Rejtett debug log
         console.log("move:", m, ", score:", wins[m]);
     }
 
-    // Find the best starting move with maximum score
+    // Megkeresi azt a kezdőlépést amelynek a legmagasabb a pontértéke
     let max = -999999;
     let best_move = 0;
     for (let i = 0; i < X_SIZE; i++) {
@@ -91,7 +94,7 @@ function best_move_monte_carlo(legal_moves) {
         }
     }
 
-    // Restore the table and color_to_move from backup
+    // Visszaállítja a table and color_to_move változókat a mentésből
     for (let y = 0; y < Y_SIZE; y++) {
         for (let x = 0; x < X_SIZE; x++) {
             table[y * X_SIZE + x] = table_old[y * X_SIZE + x];

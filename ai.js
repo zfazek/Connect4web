@@ -5,12 +5,12 @@ function get_best_move() {
     let legal_moves = [];
     let num_legal_moves = get_legal_moves(legal_moves);
 
-    // If there is no legal moves, return NO_BEST_MOVE
+    // Ha nincs legális lépés, return NO_BEST_MOVE
     if (num_legal_moves == 0) {
         return NO_BEST_MOVE;
     }
 
-    // Check level
+    // Fokozat ellenőrzés
     if (level == 1) {
         return get_best_move_monkey();
     } else if (level == 2) {
@@ -19,7 +19,7 @@ function get_best_move() {
             return m;
         }
 
-        // If no immedate win, make random move
+        // Ha nincs azonnali nyerő lépés, véletlenszerűen lép
         return get_best_move_monkey();
     } else if (level == 3) {
         return get_good_move();
@@ -46,39 +46,53 @@ function get_random_int(max) {
     return Math.floor(Math.random() * max);
 }
 
-// Returns a random move
-// Move is the index of the column
-// Move is an integer from 0 to 6
-// If the given column is full, it is not a legal move
-// Repeat generating random integers until the given column is not full
-// and legal move could be made
+// Visszatér egy véletlen legális lépéssel
+// A lépés tulajdonképpen az indexe az oszlopnak
+// A lépés egy integer érték 0 - 6 között
+// Ha az oszlop tele van, ez nem egy legális lépés
+//
+// Feladat: Addig generálj egy véltelen lépést amíg az nem legális.
+// Ha legális, akkor térj vissza az oszlop indexével
+// Tipp: használd a get_random_int(X_SIZE) függvényt véletlenszám
+// generálásához 0 és X_SIZE között!
+// Tipp: használd az is_legal_move() függvényt, hogy ellenőrizd,
+// hogy a lépés legális-e!
 function get_best_move_monkey() {
     while (true) {
         let m = get_random_int(X_SIZE);
-        if (is_legal_move(m))
+        if (is_legal_move(m)) {
             return m;
+        }
     }
 }
 
-// Returns the move which the game can win by one move
+// Visszatér azzal a lépéssel amellyel azonnal nyerni lehet
+// Ha nincs ilyen lépés akkor NO_BEST_MOVE-al tér vissza
 //
-// Check all the legal moves
-// Make each move. Hint: use make_move() function
-// Check if game is over: Hint: use is_game_over() function
-// Hint: make_move() function changes color_to_move to next player`s color
-// Hint: use get_opposite_color() function to get the other player`s color
+// Feladat: Vedd végig az összes legálist lépést!
+// legal_moves paraméter tartalmazza őket egy array-ben
+// Lépd meg az összes lépést! Tipp: használd a make_move() függvényt
+// egy for cikluson belül!
+// Ellenőrizd, hogy a lépéssel megnyerted-e a játszmát!
+// Tipp: használd az is_game_over() függvényt!
+// Tipp: make_move() függvény a color_to_move változó értékét
+// átállítja az ellenfelére!
+// Tipp: használd a get_opposite_color() függvényt,
+// hogy megkapd az ellenfél színét!
+// if (is_game_over() == get_opposite_color())
 //
-// If it wins the game, return that move
-// If there is no move to win in one move, return NO_BEST_MOVE
-// Take back last move. Hint: use take_back() function
+// Ha vége van a játszmának, térj vissza azzal a lépéssel!
+// Egyébként térj vissza NO_BEST_MOVE értékkel!
+// Minden ellenőrzés után vedd vissza a lépést!
+// Tipp: használd a take_back() függvényt!
 //
-// params:
-//      legal_moves: array of indices of legal moves
-//      e.g. [0, 1, 2, 6]
+// paraméterek:
+//     legal_moves: tömb (array) amely tartalmazza a legális lépéseket
+//     pl. [0, 1, 2, 6]
 function can_win(legal_moves) {
     for (let i = 0; i < legal_moves.length; i++) {
         let m = legal_moves[i];
-        make_move(m, true);
+        make_move(m);
         if (is_game_over() == get_opposite_color()) {
             take_back();
             return m;
@@ -88,17 +102,20 @@ function can_win(legal_moves) {
     return NO_BEST_MOVE;
 }
 
-// Returns the move which should take in order to not to lose the game
-// immediately
+// Visszatér azzal a lépéssel amellyel nem veszít azonnal
+// Ha az ellenfél azt lépné, akkor rögtön nyerne
+// Védekező lépés
 //
-// Hint: Try to reuse can_win() function
-// Hint: To change the color of the nex player,
-// use: color_to_move = get_opposite_color()
-// Hint: Do not forget to change the color back!
+// Tipp: Próbld meg újrahasználni a reuse can_win() függvényt!
+// Tipp: Először változtasd meg, hogy ki következik!
+// Állítsd át a color_to_move változó értékét az ellenfél színére!
+// Használd a color_to_move = get_opposite_color(); sort ehhez!
+// Tipp: Ne feledd ezt visszaállítani az eredeti értékre a függvény végén!
+// Tipp: Ugyan azzal a sorral vissza tudod állítani.
 //
-// params:
-//      legal_moves: array of indices of legal moves
-//      e.g. [0, 1, 2, 6]
+// paraméterek:
+//     legal_moves: tömb (array) amely tartalmazza a legális lépéseket
+//     pl. [0, 1, 2, 6]
 function can_save(legal_moves) {
     color_to_move = get_opposite_color();
     let m = can_win(legal_moves);
